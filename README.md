@@ -10,7 +10,7 @@ https://openweathermap.org/forecast5
 | ------------- | ------------- |
 | Alana Roberta Santos da Costa Martins  | 2040482023033  |
 | Diego Mendes Carloni  | 2040482023037  |
-| Gabriel |   |
+| Gabriel Garcia Fernandes | 2040482022019 |
 | Jaqueline Cantarino Cassimiro  | 2040482023010  |
 | Mayara Pereira Dotta  | 2040482023049  |
 #
