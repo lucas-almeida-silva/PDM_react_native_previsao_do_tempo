@@ -16,6 +16,7 @@ import {
 const Tempo = ({weatherData}) => {
   return (
     <ScrollView horizontal={false} style={styles.scrollView}>
+        <Busca data={weatherData}/>
         <TempoAtual data={weatherData && weatherData.length > 0 ? weatherData[0] : {}}/>
         <TempoFuturo data={weatherData}/>
     </ScrollView>
@@ -28,7 +29,7 @@ const TempoAtual = ({data}) => {
         return(
             <View>
                 <View>
-                    <Busca/>
+                    
                 </View>
                 <View style={styles.TempoAtualContainer}>
                     <Image source={imagemTempo} style={styles.imagemTempo}/>
