@@ -23,7 +23,7 @@ const Item = ({ title }) => (
   </View>
 );
 
-const Historico = () => {
+export const Historico = () => {
   const renderItem = ({ item }) => (
     <Item title={item.title} />
   );
@@ -65,5 +65,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
 });
-
-export default Historico

@@ -1,94 +1,82 @@
-import React, { useEffect, useState } from 'react'
-import { ImageBackground, StyleSheet, Text, View, TextInput} from 'react-native';
+import { useState } from 'react'
+import { SafeAreaView, StatusBar, ImageBackground, StyleSheet, Text, Platform } from 'react-native';
 import { Tab, TabView } from '@rneui/themed';
-import DataHora from './components/DataHora';
-import Tempo from './components/Tempo';
-import Historico from './components/Historico';
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar'
 
-const image1 = require('./assets/fundo1.png');
-const image2 = require('./assets/fundo2.png');
-const image3 = require('./assets/fundo3.png');
+import { CurrentWeather } from './src/components/CurrentWeather';
+import { SearchWeather } from './src/components/SearchWeather';
+import { Historico } from './src/components/Historico'; 
 
-const API_KEY = '49cc8c821cd2aff9af04c9f98c36eb74';
+import image1 from './src/assets/fundo1.png';
+import image2 from './src/assets/fundo2.png';
+import image3 from './src/assets/fundo3.png';
 
 export default function App() {
-  const [data, setData] = useState({});
+  const [index, setIndex] = useState(0);
 
-  useEffect (() => {
-    navigator.geolocation.getCurrentPosition((success) => {
-
-      let {latitude, longitude} = success.coords;
-      fetchDataFromApi (latitude, longitude)
-
-    }, (err) => {
-      if(err){
-        //Se a localização estiver desativada, irá mostra São Paulo como default
-        fetchDataFromApi("-23.5489", "-46.6388")
-      }
-    })
-  }, [])
-
-  const fetchDataFromApi = (latitude, longitude) => {
-  
-    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=metric&appid=${API_KEY}
-    `).then(res => res.json()).then(data => {
-  
-        console.log(data)
-        setData(data)
-      })
-  }
-
-  const [index, setIndex] = React.useState(0);
   return (
-    <View style={styles.container}>
-    <Tab style={{backgroundColor: '#18181b99', width: '100%' }}
-      value={index}
-      onChange={(e) => setIndex(e)}
-      indicatorStyle={{
-        backgroundColor: 'white',
-        height: 3,
-      }}
-    >
-      <Tab.Item
-        title="Agora"
-        titleStyle={{fontSize: 18, color:'white', fontWeight: 'bold' }}
-      />
-      <Tab.Item
-        title="Pesquisar"
-        titleStyle={{ fontSize: 18, color:'white', fontWeight: 'bold' }}
-      />
-      <Tab.Item
-        title="Histórico"
-        titleStyle={{ fontSize: 18, color:'white', fontWeight: 'bold' }}
-      />
-    </Tab>
-    <TabView style={styles.container} value={index} onChange={setIndex} animationType="spring">  
-        
-          <TabView.Item style={{width: '100%' }}>
-          <ImageBackground source={image1} resizeMode="cover" style={styles.image}>
-            <DataHora current={data.current} timezone={data.timezone} lat={data.lat} lon={data.lon}/>
+    <>
+      <SafeAreaView style={styles.container}>
+        <Tab style={{ backgroundColor: '#18181b99', width: '100%' }}
+          value={index}
+          onChange={(e) => setIndex(e)}
+          indicatorStyle={{
+            backgroundColor: 'white',
+            height: 3,
+          }}
+        >
+          <Tab.Item
+            title="Agora"
+            titleStyle={styles.tab}
+          />
+          <Tab.Item
+            title="Pesquisar"
+            titleStyle={styles.tab}
+          />
+          <Tab.Item
+            title="Histórico"
+            titleStyle={styles.tab}
+          />
+        </Tab>
+
+        <TabView style={styles.container} value={index} onChange={setIndex} animationType="spring">
+          <TabView.Item style={{ width: '100%' }}>
+            <ImageBackground source={image1} resizeMode="cover" style={styles.image}>
+              <CurrentWeather />
+            </ImageBackground>
+          </TabView.Item>
+          
+          <TabView.Item style={{ width: '100%' }}>
+            <ImageBackground source={image2} resizeMode="cover" style={styles.image}>
+            <SearchWeather />
           </ImageBackground>
-        </TabView.Item>
-        <TabView.Item style={{width: '100%' }}>
-          <ImageBackground source={image2} resizeMode="cover" style={styles.image}>
-            <Tempo weatherData={data.daily}/>
-          </ImageBackground>
-        </TabView.Item>
-        <TabView.Item style={{opacity:"0.7", width: '100%' }}>
-          <ImageBackground source={image3} resizeMode="cover" style={styles.image}>
-            <Historico/>
-          </ImageBackground>
-        </TabView.Item>
-    </TabView>
-    </View>
+
+          </TabView.Item>
+          <TabView.Item style={{ opacity: 0.7, width: '100%' }}>
+            <Text>1</Text>
+            <ImageBackground source={image3} resizeMode="cover" style={styles.image}>
+              <Historico/>
+            </ImageBackground>
+          </TabView.Item>
+        </TabView>
+      </SafeAreaView>
+
+      <ExpoStatusBar backgroundColor="#18181b99" /> 
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2.5,
+    flex: 1,
+    marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
   },
   image: {
     flex: 1,
   },
+  tab: {
+    fontSize: 17, 
+    color: 'white', 
+    fontWeight: 'bold',
+  }
 });
