@@ -15,7 +15,7 @@ export function History() {
     oracleApi.get('/')
       .then((response) => {
         const sortedHistory = response.data.items.sort((a, b) => {
-          return new Date(a.datahora) - new Date(b.datahora)
+          return new Date(b.datahora) - new Date(a.datahora)
         });
         
         setHistory(sortedHistory.map(item => ({
