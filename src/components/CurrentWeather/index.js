@@ -6,9 +6,10 @@ import ptBR from 'date-fns/locale/pt-BR';
 import * as Location from 'expo-location';
 
 import { ItemInfo } from './ItemInfo';
+import { weatherApi } from '../../lib/weatherApi';
+
 import { styles } from './styles';
 
-import { api } from '../../lib/api';
 
 export const CurrentWeather = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -43,7 +44,7 @@ export const CurrentWeather = () => {
       const { latitude, longitude } = coords;
       setIsLoading(true);
 
-      api.get(`/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric`)
+      weatherApi.get(`/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric`)
         .then(response => {
           setWeather(response.data);
         })
@@ -75,7 +76,6 @@ export const CurrentWeather = () => {
     }, 1000); // 30 seconds
 
     const updateWeatherInterval = setInterval(() => {
-      console.log('1 minute');
       handleGetCurrentWeather();
     }, 1000 * 60); // 1 minute
 
@@ -97,7 +97,7 @@ export const CurrentWeather = () => {
 
         <View style={styles.infoContainer}>
           {isLoading ? (
-            <ActivityIndicator />
+            <ActivityIndicator style={{ flex: 1 }} />
           ) : (
             <>
               <ItemInfo

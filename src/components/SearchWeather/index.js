@@ -1,24 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, TextInput, FlatList, Alert } from 'react-native';
 import { Button, ListItem, Avatar } from '@rneui/themed';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
-import { styles } from './styles'
-import { api } from '../../lib/api';
+import { weatherApi } from '../../lib/weatherApi';
+import { oracleApi } from '../../lib/oracleApi';
 
-export const SearchWeather = ({ weatherData }) => {
-  const [city, setCity] = useState("");
+import { styles } from './styles'
+
+export const SearchWeather = () => {
+  const [city, setCity] = useState("São Paulo");
   const [dailyWeather, setDailyWeather] = useState([]);
+
+  useEffect(() => {
+    if (dailyWeather.length) {
+      oracleApi.post('/', {
+        datahora: new Date(),
+        cidade: city,
+      });
+    }  
+  }, [dailyWeather]);
 
   const handleGetWeather = async () => {
     try {
-      const locales = await api.get(`/geo/1.0/direct?q=${city}&limit=1`);
+      const locales = await weatherApi.get(`/geo/1.0/direct?q=${city}&limit=1`);
 
       if (locales.data.length) {
         const { lat, lon } = locales.data[0];
 
-        const response = await api.get(`data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely&units=metric&appid`);
+        const response = await weatherApi.get(`data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely&units=metric&appid`);
 
         setDailyWeather(response.data.daily.map((dayData, index) => ({
           ...dayData,
