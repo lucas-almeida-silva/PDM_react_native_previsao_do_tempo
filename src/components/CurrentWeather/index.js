@@ -15,7 +15,7 @@ export const CurrentWeather = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [coords, setCoords] = useState(null);
   const [weather, setWeather] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const hourFormatted = useMemo(() => {
     return format(currentDate, 'KK:mm aaa');

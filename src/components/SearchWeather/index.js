@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Text, View, TextInput, FlatList, Alert } from 'react-native';
+import { 
+  KeyboardAvoidingView, 
+  View, 
+  Text, 
+  TextInput, 
+  FlatList, 
+  Alert,
+  Platform,
+  Keyboard, 
+} from 'react-native';
 import { Button, ListItem, Avatar } from '@rneui/themed';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
@@ -10,7 +19,7 @@ import { oracleApi } from '../../lib/oracleApi';
 import { styles } from './styles'
 
 export const SearchWeather = () => {
-  const [city, setCity] = useState("São Paulo");
+  const [city, setCity] = useState('');
   const [dailyWeather, setDailyWeather] = useState([]);
 
   useEffect(() => {
@@ -23,6 +32,8 @@ export const SearchWeather = () => {
   }, [dailyWeather]);
 
   const handleGetWeather = async () => {
+    Keyboard.dismiss();
+
     try {
       const locales = await weatherApi.get(`/geo/1.0/direct?q=${city}&limit=1`);
 
@@ -37,8 +48,6 @@ export const SearchWeather = () => {
             ? 'hoje'
             : format(new Date(dayData.dt * 1000), 'EEEE', { locale: ptBR }),
         })));
-
-        //Salvar histórico
       } else {
         Alert.alert(
           'Cidade não encontrada',
@@ -55,7 +64,10 @@ export const SearchWeather = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'android' ? 'height' : 'padding' }
+      style={styles.container}
+    >
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -81,7 +93,6 @@ export const SearchWeather = () => {
         data={dailyWeather}
         showsVerticalScrollIndicator={false}
         keyExtractor={weather => weather.dt}
-        contentContainerStyle={{ paddingVertical: 10 }}
         renderItem={({ item: weather }) => (
           <ListItem containerStyle={styles.listItemContainer}>
             <Avatar
@@ -105,7 +116,7 @@ export const SearchWeather = () => {
           </ListItem>
         )}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
