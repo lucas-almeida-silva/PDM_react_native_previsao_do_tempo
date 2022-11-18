@@ -7,9 +7,9 @@ import { CurrentWeather } from './src/components/CurrentWeather';
 import { SearchWeather } from './src/components/SearchWeather';
 import { Historico } from './src/components/Historico'; 
 
-import image1 from './src/assets/fundo1.png';
-import image2 from './src/assets/fundo2.png';
-import image3 from './src/assets/fundo3.png';
+import image1 from './assets/fundo1.png';
+import image2 from './assets/fundo2.png';
+import image3 from './assets/fundo3.png';
 
 export default function App() {
   const [index, setIndex] = useState(0);

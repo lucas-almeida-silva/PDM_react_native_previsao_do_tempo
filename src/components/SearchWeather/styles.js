@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     borderBottomColor: "#CCC",
     borderBottomWidth: 2,
-    padding: 12,
+    padding: 8,
     marginBottom: 4,
     color: 'white',
     fontSize: 18,

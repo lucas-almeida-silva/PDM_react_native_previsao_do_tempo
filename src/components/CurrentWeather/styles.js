@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#eee',
     borderWidth: 1,
-    margin: 10
+    margin: 10,
   },
   hour: {
     fontSize: 55,
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginTop: 10,
-    width: 300,
+    minHeight: 105,
   },
   locale: {
     fontSize: 30,
